@@ -1,0 +1,5 @@
+@import "./colors.scss";
+#home-page {
+  height: calc(100vh - 96px);
+  background-color: $secondary;
+}

@@ -1,0 +1,19 @@
+@import "@fontsource/montserrat";
+@import "./header.module.scss";
+@import "./homepage.module.scss";
+@import "./colors.scss";
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Montserrat";
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
