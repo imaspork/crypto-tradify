@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev && node cron.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -12,7 +12,10 @@
     "@fontsource/montserrat": "^4.5.7",
     "axios": "^0.26.1",
     "bootstrap": "^5.1.3",
+    "dotenv": "^16.0.0",
+    "mongodb": "^4.5.0",
     "next": "12.1.5",
+    "node-cron": "^3.0.0",
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "sass": "^1.50.0"
