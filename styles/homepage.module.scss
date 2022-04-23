@@ -2,4 +2,14 @@
 #home-page {
   height: calc(100vh - 96px);
   background-color: $secondary;
+
+  h1,
+  .welcome-h1 {
+    font-size: 4rem;
+  }
+
+  .home-page-button {
+    max-width: 200px;
+    width: 100%;
+  }
 }

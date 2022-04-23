@@ -1,0 +1,32 @@
+@import "./colors.scss";
+
+.button-primary {
+  border: none;
+  background-color: $primary;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-weight: 600;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 10px;
+  transition: background-color 0.25s cubic-bezier(0.175, 0.885, 0.32, 0.8);
+
+  &:hover {
+    background-color: $primary-shift;
+    transition: background-color 0.25s cubic-bezier(0.175, 0.885, 0.32, 0.8);
+  }
+}
+
+.button-secondary {
+  border: none;
+  background-color: $secondary;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-weight: 600;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 10px;
+  transition: background-color 0.25s cubic-bezier(0.175, 0.885, 0.32, 0.8);
+
+  &:hover {
+    background-color: $dark;
+    color: $secondary;
+    transition: background-color 0.25s cubic-bezier(0.175, 0.885, 0.32, 0.8);
+  }
+}
