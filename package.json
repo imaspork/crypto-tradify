@@ -3,21 +3,29 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev && node cron.js",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "get-coins": "node cron.js"
   },
   "dependencies": {
     "@fontsource/montserrat": "^4.5.7",
     "axios": "^0.26.1",
     "bootstrap": "^5.1.3",
+    "concurrently": "^7.1.0",
     "dotenv": "^16.0.0",
+    "luxon": "^2.3.2",
     "mongodb": "^4.5.0",
+    "mongoose": "^6.3.0",
     "next": "12.1.5",
+    "next-auth": "^4.3.2",
     "node-cron": "^3.0.0",
+    "popper.js": "^1.16.1",
     "react": "18.0.0",
+    "react-bootstrap": "^2.3.0",
     "react-dom": "18.0.0",
+    "recharts": "^2.1.9",
     "sass": "^1.50.0"
   },
   "devDependencies": {

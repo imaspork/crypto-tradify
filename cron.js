@@ -1,48 +1,64 @@
 var cron = require("node-cron");
 const axios = require("axios").default;
-const { MongoClient } = require("mongodb");
+const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 dotenv.config();
-
+const Coin = require("./schemas/coin");
+/**
+ * Fetches coin API to get top 100 coins
+ */
 function getDailyCryptoData() {
   axios
-    .get("https://api.coinlore.net/api/tickers/?start=100&limit=100")
+    .get("https://api.coinlore.net/api/tickers/?start=0&limit=100")
     .then((response) => {
-      const convertedData = JSON.stringify(response.data.data);
-      console.log(convertedData);
-      return convertedData;
+      onSuccess(response);
     })
     .catch((err) => {
       console.log(err);
     });
 }
+/**
+ *
+ * @param response - coin API response data
+ * On success, this function loops through the response object and creates a new coin and saves it to the db.
+ */
+async function onSuccess(response) {
+  const currentCoinStats = response.data.data;
+  for (let i = 0; i < currentCoinStats.length; i++) {
+    let newCoin = new Coin({
+      coinId: currentCoinStats[i].id,
+      symbol: currentCoinStats[i].symbol,
+      name: currentCoinStats[i].name,
+      nameId: currentCoinStats[i].nameId,
+      rank: currentCoinStats[i].rank,
+      price_usd: currentCoinStats[i].price_usd,
+      percent_change_24h: currentCoinStats[i].percent_change_24h,
+      percent_change_7d: currentCoinStats[i].percent_change_7d,
+      price_btc: currentCoinStats[i].price_btc,
+      market_cap_usd: currentCoinStats[i].market_cap_usd,
+      volume24: currentCoinStats[i].volume24,
+      volume24a: currentCoinStats[i].volume24a,
+      csupply: currentCoinStats[i].csupply,
+      tsupply: currentCoinStats[i].tsupply,
+    });
 
-async function updateDB() {
-  const client = new MongoClient(process.env.mongoURI);
-  try {
-    // Connect to the MongoDB cluster
-    await client.connect();
+    await newCoin.save();
 
-    // Make the appropriate DB calls
-    await listDatabases(client);
-  } catch (e) {
-    console.error(e);
-  } finally {
-    // Close the connection to the MongoDB cluster
-    await client.close();
+    console.log(`new coin ${newCoin.name} is saved!`);
+
+    if (i === currentCoinStats.length - 1) {
+      console.log(`${currentCoinStats.length} coins saved.`);
+    }
   }
 }
 
-cron.schedule("*/10 * * * * *", () => {
-  // getDailyCryptoData();
-  console.log("test!!!!");
+mongoose.connect(process.env.mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
-updateDB();
-
-async function listDatabases(client) {
-  databasesList = await client.db().admin().listDatabases();
-
-  console.log("Databases:");
-  databasesList.databases.forEach((db) => console.log(` - ${db.name}`));
-}
+getDailyCryptoData();
+cron.schedule("0 0 0 * * *", () => {
+  console.log("saving crypto coins from top 100");
+  getDailyCryptoData();
+});

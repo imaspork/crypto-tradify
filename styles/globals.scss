@@ -2,6 +2,8 @@
 @import "./header.module.scss";
 @import "./homepage.module.scss";
 @import "./colors.scss";
+@import "./buttons.scss";
+
 html,
 body {
   padding: 0;
@@ -16,4 +18,22 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.coin-block {
+  width: 200px;
+  height: 200px;
+  background-color: $primary;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.coin-graph-container {
+  height: 500px;
+  width: 100vw;
+}
+
+.crypto-dropdown-menu {
+  height: 1000px;
+  overflow-y: scroll;
 }
