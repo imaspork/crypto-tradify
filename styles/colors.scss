@@ -2,3 +2,23 @@ $primary: rgb(152, 191, 100);
 $primary-shift: rgb(177, 224, 115);
 $secondary: #e8ece7;
 $dark: #241f25;
+
+.cls-1 {
+  fill: rgba(248, 0, 0, 0);
+}
+.cls-2 {
+  fill: rgb(152, 191, 100);
+}
+.cls-3 {
+  fill: #060606;
+}
+
+.clsL-1 {
+  fill: rgba(248, 0, 0, 0);
+}
+.clsL-2 {
+  fill: rgb(152, 191, 100);
+}
+.clsL-3 {
+  fill: rgb(152, 191, 100, 0.5);
+}

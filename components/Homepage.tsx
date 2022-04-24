@@ -9,10 +9,10 @@ const Homepage = () => {
     >
       <div className='d-flex flex-column align-items-center'>
         <h1 className='welcome-h1'>Welcome.</h1>
-        <Link href='/Sign-Up'>
+        <Link href='/Account'>
           <a>
             <button className='button-primary mt-3 homepage-button'>
-              Trade Crypto.
+              Account Page
             </button>
           </a>
         </Link>

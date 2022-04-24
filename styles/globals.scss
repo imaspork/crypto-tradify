@@ -3,7 +3,7 @@
 @import "./homepage.module.scss";
 @import "./colors.scss";
 @import "./buttons.scss";
-
+@import "./cryptopage.module.scss";
 html,
 body {
   padding: 0;
@@ -20,20 +20,7 @@ a {
   box-sizing: border-box;
 }
 
-.coin-block {
-  width: 200px;
-  height: 200px;
-  background-color: $primary;
-  border-radius: 8px;
-  text-align: center;
-}
-
-.coin-graph-container {
-  height: 500px;
-  width: 100vw;
-}
-
-.crypto-dropdown-menu {
-  height: 1000px;
-  overflow-y: scroll;
+.recharts-wrapper .recharts-cartesian-grid-horizontal line:first-child,
+.recharts-wrapper .recharts-cartesian-grid-horizontal line:last-child {
+  stroke-opacity: 0;
 }

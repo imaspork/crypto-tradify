@@ -1,15 +1,15 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/globals.scss";
 import Layout from "../components/Layout";
-import { SessionProvider } from "next-auth/react";
+import { Provider } from "next-auth/client";
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }) {
+function MyApp({ Component, pageProps }) {
   return (
-    <SessionProvider session={session}>
-      <Layout>
+    <Provider session={pageProps.session}>
+      <Layout {...pageProps}>
         <Component {...pageProps} />
       </Layout>
-    </SessionProvider>
+    </Provider>
   );
 }
 

@@ -1,4 +1,20 @@
+@import "./colors.scss";
 #header {
-  height: 96px;
+  height: 70px;
   background-color: #fff;
+}
+
+.return {
+  text-decoration: none;
+  &:hover {
+    color: initial;
+  }
+}
+
+.header-logo {
+  width: 75px;
+}
+
+.account-button {
+  margin: 0 12px;
 }
