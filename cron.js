@@ -44,7 +44,7 @@ async function onSuccess(response) {
 
     await newCoin.save();
 
-    console.log(`new coin ${newCoin.name} is saved!`);
+    console.log(`new coin ${newCoin.name} is saved at rank ${newCoin.rank}`);
 
     if (i === currentCoinStats.length - 1) {
       console.log(`${currentCoinStats.length} coins saved.`);

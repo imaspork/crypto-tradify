@@ -13,6 +13,7 @@ import {
   Area,
 } from "recharts";
 import formatGraphData from "../util/formatgraphtime";
+import formatNums from "../util/formatNums";
 import { DateTime } from "luxon";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 
@@ -118,69 +119,88 @@ const Crypto = ({ coinData }) => {
 
   return (
     <section id='crypto-page'>
-      <section className='d-flex flex-row pt-5'>
+      <section id='crypto-responsive-container' className='d-flex pt-5'>
         <div className='d-flex justify-content-center chart-container'>
-          {/* <CoinChart /> */}
-          <LineGraphChart />
+          <CoinChart />
+          {/* <LineGraphChart /> */}
         </div>
-        <div>
-          <div className='d-flex flex-column'>
-            <div id='coin-stats'>
-              <h2 className='coin-name'>
-                {testRef.current?.name ? testRef.current.name : null}
+        <div className='d-flex flex-column w-100 coin-stats-container'>
+          <div id='coin-stats'>
+            <h2 className='coin-name text-center'>
+              {testRef.current?.name ? testRef.current.name : null}
+            </h2>
+            <div className='d-flex flex-row justify-content-between'>
+              <h2 className='coin-value'>Value $</h2>
+              <h2>
+                {testRef.current?.price_usd ? testRef.current.price_usd : null}
               </h2>
-              <div className='d-flex flex-row justify-content-between'>
-                <h2 className='coin-value'>Value $</h2>
-                <h2>
-                  {testRef.current?.price_usd
-                    ? testRef.current.price_usd
-                    : null}
-                </h2>
-              </div>
-              <div className='d-flex flex-row justify-content-between'>
-                <h2 className='coin-rank'>Rank</h2>
-                <h2>{testRef.current?.rank ? testRef.current.rank : null}</h2>
-              </div>
-              <div className='d-flex flex-row justify-content-between'>
-                <h2 className='coin-7-day'>7 Day Diff </h2>
-                <h2>
-                  {testRef.current?.percent_change_7d
-                    ? testRef.current.percent_change_7d
-                    : null}
-                  %
-                </h2>
-              </div>
             </div>
-            <div className='d-flex flex-row'>
-              <Dropdown className='m-1'>
-                <Dropdown.Toggle
-                  id='dropdown-button-dark-example1'
-                  variant='secondary'
-                >
-                  {currentCoin ? currentCoin : "Select a Cryptocurrency"}
-                </Dropdown.Toggle>
+            <div className='d-flex flex-row justify-content-between'>
+              <h2 className='coin-rank'>Rank</h2>
+              <h2>{testRef.current?.rank ? testRef.current.rank : null}</h2>
+            </div>
+            <div className='d-flex flex-row justify-content-between'>
+              <h2 className='coin-7-day'>7 Day Diff </h2>
+              <h2>
+                {testRef.current?.percent_change_7d
+                  ? `${testRef.current.percent_change_7d}%`
+                  : null}
+              </h2>
+            </div>
+            <div className='d-flex flex-row justify-content-between'>
+              <h2 className='coin-value'>24 Hour Diff</h2>
+              <h2>
+                {testRef.current?.percent_change_24h
+                  ? `${testRef.current.percent_change_24h}%`
+                  : null}
+              </h2>
+            </div>
+            <div className='d-flex flex-row justify-content-between'>
+              <h2 className='coin-rank'>Market Cap</h2>
+              <h2>
+                {testRef.current?.market_cap_usd
+                  ? formatNums(testRef.current.market_cap_usd)
+                  : null}
+              </h2>
+            </div>
+            <div className='d-flex flex-row justify-content-between'>
+              <h2 className='coin-7-day'>Volume 24H </h2>
+              <h2>
+                {testRef.current?.volume24a
+                  ? `${formatNums(testRef.current.volume24a)}`
+                  : null}
+              </h2>
+            </div>
+          </div>
+          <div className='d-flex flex-row'>
+            <Dropdown className='m-1'>
+              <Dropdown.Toggle
+                id='dropdown-button-dark-example1'
+                variant='secondary'
+              >
+                {currentCoin ? currentCoin : "Select a Cryptocurrency"}
+              </Dropdown.Toggle>
 
-                <Dropdown.Menu variant='dark' className='crypto-dropdown-menu'>
-                  {coinData.map((coin) => {
-                    return (
-                      <Dropdown.Item key={`${coin._id}`}>
-                        <h2
-                          onClick={() => {
-                            coinGraph(coin);
-                            setCurrentCoin(coin.name);
-                            testRef.current = coin;
-                            console.log(testRef.current.coinId);
-                          }}
-                        >
-                          {coin.name}
-                        </h2>
-                      </Dropdown.Item>
-                    );
-                  })}
-                </Dropdown.Menu>
-              </Dropdown>
-              <input className='m-1'></input>
-            </div>
+              <Dropdown.Menu variant='dark' className='crypto-dropdown-menu'>
+                {coinData.map((coin) => {
+                  return (
+                    <Dropdown.Item key={`${coin._id}`}>
+                      <h2
+                        onClick={() => {
+                          coinGraph(coin);
+                          setCurrentCoin(coin.name);
+                          testRef.current = coin;
+                          console.log(testRef.current.coinId);
+                        }}
+                      >
+                        {coin.name}
+                      </h2>
+                    </Dropdown.Item>
+                  );
+                })}
+              </Dropdown.Menu>
+            </Dropdown>
+            <input className='m-1'></input>
           </div>
         </div>
       </section>

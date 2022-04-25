@@ -3,6 +3,16 @@
   background-color: $secondary;
   padding: 0 16px;
 
+  #crypto-responsive-container {
+    flex-direction: column;
+    align-items: center;
+
+    @media (min-width: 1420px) {
+      flex-direction: row;
+      justify-content: space-around;
+    }
+  }
+
   .crypto-dropdown-menu {
     height: 500px;
 
@@ -15,7 +25,14 @@
     width: 100%;
   }
 
+  .coin-stats-container {
+    max-width: 650px;
+  }
+
   #coin-stats {
+    padding: 8px;
+    width: 100%;
+    max-width: 650px;
     .coin-name {
       font-weight: 400;
     }

@@ -1,7 +1,10 @@
 import React from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/client";
 
 const Homepage = () => {
+  const [session, loadingSession] = useSession();
+
   return (
     <section
       id='home-page'
@@ -12,7 +15,7 @@ const Homepage = () => {
         <Link href='/Account'>
           <a>
             <button className='button-primary mt-3 homepage-button'>
-              Account Page
+              {session ? "Account Page" : "Sign Up"}
             </button>
           </a>
         </Link>

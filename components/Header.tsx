@@ -1,6 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import SvgLogo from "./svgs/logo";
 import { signIn, signOut, useSession, getSession } from "next-auth/client";
 
@@ -8,10 +7,7 @@ const Header = () => {
   const [session, loadingSession] = useSession();
 
   return (
-    <section
-      id='header'
-      className='d-flex flex-row align-items-center justify-content-between'
-    >
+    <section id='header' className='d-flex flex-row align-items-center'>
       <div id='logo-container' className='d-flex flex-row align-items-center'>
         <Link href='/'>
           <a>
@@ -35,14 +31,7 @@ const Header = () => {
               Sign Out
             </button>
           </div>
-        ) : (
-          <button
-            className='button-secondary account-button'
-            onClick={() => signIn()}
-          >
-            Sign In
-          </button>
-        )}
+        ) : null}
       </div>
     </section>
   );

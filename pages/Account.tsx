@@ -8,33 +8,38 @@ export default function SignUp() {
     return <p>Loading...</p>;
   }
   return (
-    <div>
-      <h1>Google Authentication with NextAuth </h1>
+    <section
+      id='account-page'
+      className='d-flex flex-row justify-content-center'
+    >
+      <div className='d-flex flex-column justify-content-center align-items-center'>
+        <h1 className='text-center'> Sign in with Google or Github</h1>
 
-      {!session && (
-        <>
-          <button onClick={() => signIn()}>Sign In</button>
-        </>
-      )}
+        <div>
+          {!session && (
+            <>
+              <button className='sign-in-button' onClick={() => signIn()}>
+                Sign In
+              </button>
+            </>
+          )}
 
-      {session && (
-        <>
-          <h4>You are logged as: {session.user.name}</h4>
-          <div>
-            <h4>Email: {session.user.email}</h4>
-            <br />
-            {session.user.image && (
-              <span>
-                <img src={session.user.image} alt={session.user.name} />
-              </span>
-            )}
-          </div>
-
-          <br />
-          <br />
-          <button onClick={() => signOut()}>Sign Out</button>
-        </>
-      )}
-    </div>
+          {session && (
+            <>
+              <h4>Welcome back {session.user.name}</h4>
+              <div>
+                <h4>Email: {session.user.email}</h4>
+                <br />
+                {session.user.image && (
+                  <span className='user-profile'>
+                    <img src={session.user.image} alt={session.user.name} />
+                  </span>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </section>
   );
 }
