@@ -1,8 +1,12 @@
 import { useSession, signIn, signOut, getSession } from "next-auth/client";
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function SignUp() {
   const [session, loadingSession] = useSession();
+
+  const signInHandler = (provider) => {
+    signIn(provider);
+  };
 
   if (loadingSession) {
     return <p>Loading...</p>;
@@ -13,15 +17,25 @@ export default function SignUp() {
       className='d-flex flex-row justify-content-center'
     >
       <div className='d-flex flex-column justify-content-center align-items-center'>
-        <h1 className='text-center'> Sign in with Google or Github</h1>
-
         <div>
           {!session && (
-            <>
-              <button className='sign-in-button' onClick={() => signIn()}>
-                Sign In
+            <React.Fragment>
+              <h1 className='text-center'> Sign in with Google or Github</h1>
+              <button
+                className='sign-in-button'
+                onClick={() => signInHandler("google")}
+              >
+                Sign In Google
               </button>
-            </>
+              <button
+                className='sign-in-button'
+                onClick={() => {
+                  signInHandler("github");
+                }}
+              >
+                Sign In GitHub
+              </button>
+            </React.Fragment>
           )}
 
           {session && (

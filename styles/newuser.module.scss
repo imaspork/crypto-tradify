@@ -1,0 +1,26 @@
+#user-choice-container {
+  min-height: calc(100vh - 70px);
+  height: 100%;
+  width: 100%;
+  background-color: $secondary;
+
+  #difficulty-card-container {
+    max-width: 1500px;
+
+    #difficulty-title {
+      width: 100%;
+      text-align: center;
+      padding: 32px;
+    }
+
+    .difficulty-card {
+      background-color: $primary;
+      border-radius: 8px;
+      width: 250px;
+      height: 400px;
+
+      margin: 32px;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 10px;
+    }
+  }
+}

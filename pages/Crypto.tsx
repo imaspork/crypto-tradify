@@ -16,18 +16,45 @@ import formatGraphData from "../util/formatgraphtime";
 import formatNums from "../util/formatNums";
 import { DateTime } from "luxon";
 import { Dropdown, DropdownButton } from "react-bootstrap";
+import { useSession } from "next-auth/client";
 
 const Crypto = ({ coinData }) => {
   const [graphData, setGraphData] = useState(null);
   const [currentCoin, setCurrentCoin] = useState("Select a Cryptocurrency");
+  const [coinToBuy, setCoinToBuy] = useState(null);
+
+  const [session, loadingSession] = useSession();
+  console.log(session);
+
+  useEffect(() => {}, [coinToBuy]);
 
   const testRef = useRef(null);
 
-  const buyCoin = async (coin) => {
+  const buyCoin = async (selectedCoin) => {
+    console.log(selectedCoin);
+
+    const purchasePointCoin = selectedCoin.coinName;
+    const purchasePointCoinAmount = selectedCoin.coinAmount;
+    const purchasePointAmountUSD = selectedCoin.coinAmountUSD;
     const data = await fetch(
-      `http://localhost:3000/api/user?coin_name=${coin.name}&user=test`
+      `http://localhost:3000/api/purchasePoint?user_email=${session?.user?.email}&coin_name=${purchasePointCoin}&coin_amount=${purchasePointCoinAmount}&usd_coin_amount=${purchasePointAmountUSD}`
     );
-    const response = await data.json();
+
+    const response = await data;
+    console.log(response);
+  };
+
+  const coinToBuyHandler = (event, currentCoin) => {
+    let desiredCoinValueUSD = event;
+    let desiredCoinToBuy = currentCoin.name;
+    let desiredCoinAmount = desiredCoinValueUSD / currentCoin?.price_usd;
+    if (currentCoin) {
+      setCoinToBuy({
+        coinName: desiredCoinToBuy,
+        coinAmount: desiredCoinAmount.toFixed(7),
+        coinAmountUSD: desiredCoinValueUSD,
+      });
+    }
   };
 
   const coinGraph = async (coin) => {
@@ -84,45 +111,11 @@ const Crypto = ({ coinData }) => {
     );
   };
 
-  const LineGraphChart = () => {
-    return (
-      <ResponsiveContainer
-        width='100%'
-        className='chart'
-        height='100%'
-        aspect={2}
-      >
-        <LineChart
-          data={graphData}
-          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-        >
-          <CartesianGrid strokeDasharray='1' />
-          <XAxis dataKey='time' />
-          <YAxis
-            dataKey='price_usd'
-            tickFormatter={(number) => `$${number.toFixed(2)}`}
-            domain={["dataMin", "auto"]}
-          />
-          <Tooltip />
-          <Legend />
-
-          <Line
-            type='monotone'
-            dataKey='price_usd'
-            stroke='#82ca9d'
-            dot={false}
-          />
-        </LineChart>
-      </ResponsiveContainer>
-    );
-  };
-
   return (
     <section id='crypto-page'>
       <section id='crypto-responsive-container' className='d-flex pt-5'>
         <div className='d-flex justify-content-center chart-container'>
           <CoinChart />
-          {/* <LineGraphChart /> */}
         </div>
         <div className='d-flex flex-column w-100 coin-stats-container'>
           <div id='coin-stats'>
@@ -172,7 +165,14 @@ const Crypto = ({ coinData }) => {
               </h2>
             </div>
           </div>
-          <div className='d-flex flex-row'>
+        </div>
+      </section>
+      <section
+        id='buy-section-container'
+        className='d-flex flex-row justify-content-center w-100'
+      >
+        <div className='d-flex flex-row align-items-start'>
+          <div className='d-flex flex-column'>
             <Dropdown className='m-1'>
               <Dropdown.Toggle
                 id='dropdown-button-dark-example1'
@@ -190,7 +190,6 @@ const Crypto = ({ coinData }) => {
                           coinGraph(coin);
                           setCurrentCoin(coin.name);
                           testRef.current = coin;
-                          console.log(testRef.current.coinId);
                         }}
                       >
                         {coin.name}
@@ -200,7 +199,33 @@ const Crypto = ({ coinData }) => {
                 })}
               </Dropdown.Menu>
             </Dropdown>
-            <input className='m-1'></input>
+            <button
+              className='button-primary'
+              onClick={() => buyCoin(coinToBuy)}
+            >
+              Buy
+            </button>
+          </div>
+
+          <div className='d-flex flex-row justify-content-center'>
+            <div className='d-flex flex-column buy-section '>
+              <input
+                className='m-1'
+                placeholder='Enter USD amount'
+                type='number'
+                min='0'
+                onChange={(event) =>
+                  coinToBuyHandler(event.target.value, testRef.current)
+                }
+              ></input>
+              {/* add toggle for puchasing by dollar and by coin amount */}
+              <div className='mt-2'>
+                <h5 className='text-center'>
+                  {/* {coinToBuy?.coinAmount} {coinToBuy.coinName} */}
+                </h5>
+                <h5 className='text-center'>${coinToBuy?.coinAmountUSD} USD</h5>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -222,7 +247,6 @@ export async function getServerSideProps(context) {
 
   const coins = JSON.parse(JSON.stringify(data));
   coins.sort((a, b) => a.rank - b.rank);
-  // console.log(coins);
 
   return {
     props: {

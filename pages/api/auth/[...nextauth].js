@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
+import checkUserEmail from "../../../util/checkUserEmail";
 
 export default NextAuth({
   // Configure one or more authentication providers
@@ -37,10 +38,23 @@ export default NextAuth({
         };
       }
 
-      // USE THIS AREA TO FETCH USER ACCOUNT BASED ON EMAIL from mongodb : DDDD
-      // is user in db? no? -> create db user
-      // yes? return db user
+      // if account has email, pass in email parameter to check db.
+
       return token;
+    },
+    async session(session, account) {
+      if (account?.email) {
+        const response = await checkUserEmail(account?.email);
+        const isReturningUser = await response?.isReturningUser;
+
+        if (isReturningUser === true) {
+          session.isNew = false;
+        } else {
+          session.isNew = true;
+        }
+      }
+
+      return session;
     },
 
     redirect: async (url, _baseUrl) => {
