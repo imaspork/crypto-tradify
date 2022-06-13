@@ -3,13 +3,19 @@
   height: calc(100vh - 70px);
   background-color: $secondary;
 
-  h1,
-  .welcome-h1 {
-    font-size: 4rem;
-  }
+  h1
 
   .home-page-button {
     max-width: 200px;
     width: 100%;
+  }
+
+  #tagline {
+    max-width: 450px;
+    h1 {
+      font-size: 3rem;
+        
+      
+    }
   }
 }

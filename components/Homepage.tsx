@@ -6,34 +6,46 @@ import Router, { useRouter } from "next/router";
 const Homepage = () => {
   const [session, loadingSession] = useSession();
 
-  useEffect(() => {
-    console.log(session);
-    if (session?.isNew === true) {
-      Router.push("/NewUser", undefined, { shallow: true });
+  const RenderButtonsOnSession = () => {
+    if (session) {
+      return (
+        <React.Fragment>
+          <Link href='/Crypto'>
+            <a>
+              <button className='button-primary mt-3 homepage-button'>
+                Buy Crypto
+              </button>
+            </a>
+          </Link>
+        </React.Fragment>
+      );
+    } else {
+      return (
+        <React.Fragment>
+          <Link href='/Account'>
+            <a>
+              <button className='button-primary mt-3 homepage-button'>
+                {session ? "Account Page" : "Get started"}
+              </button>
+            </a>
+          </Link>
+        </React.Fragment>
+      );
     }
-  }, [session]);
+  };
 
   return (
     <section
       id='home-page'
       className='d-flex flex-row justify-content-center align-items-center'
     >
+      <div id='tagline'>
+        <h1>
+          <b>Buy, Sell, and Hold the top 100 Cryptocurrencies (simulated)</b>{" "}
+        </h1>
+      </div>
       <div className='d-flex flex-column align-items-center'>
-        <h1 className='welcome-h1'>Welcome.</h1>
-        <Link href='/Account'>
-          <a>
-            <button className='button-primary mt-3 homepage-button'>
-              {session ? "Account Page" : "Sign Up"}
-            </button>
-          </a>
-        </Link>
-        <Link href='/Crypto'>
-          <a>
-            <button className='button-primary mt-3 homepage-button'>
-              Buy Crypto
-            </button>
-          </a>
-        </Link>
+        <RenderButtonsOnSession />
       </div>
     </section>
   );
