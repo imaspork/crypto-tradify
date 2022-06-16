@@ -1,4 +1,25 @@
 #account-page {
   height: calc(100vh - 70px);
   background-color: $secondary;
+
+  .login-wrapper-button {
+    border: none;
+    width: 220px;
+    height: 46px;
+    border-radius: 4px;
+    background-color: white;
+    margin: 8px;
+    box-shadow: rgba(92, 92, 92, 0.35) 0px 5px 10px;
+    font-weight: 600;
+    padding: 4px;
+
+    &:hover {
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 10px;
+      cursor: pointer;
+    }
+
+    span {
+      margin-left: 8px;
+    }
+  }
 }

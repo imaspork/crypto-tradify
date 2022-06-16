@@ -9,7 +9,7 @@ const Coin = require("./schemas/coin");
  */
 function getDailyCryptoData() {
   axios
-    .get("https://api.coinlore.net/api/tickers/?start=0&limit=100")
+    .get("https://api.coinlore.net/api/tickers/")
     .then((response) => {
       onSuccess(response);
     })
@@ -23,6 +23,7 @@ function getDailyCryptoData() {
  * On success, this function loops through the response object and creates a new coin and saves it to the db.
  */
 async function onSuccess(response) {
+  console.log(response);
   const currentCoinStats = response.data.data;
   for (let i = 0; i < currentCoinStats.length; i++) {
     let newCoin = new Coin({

@@ -31,8 +31,6 @@ const Crypto = ({ coinData }) => {
   const testRef = useRef(null);
 
   const buyCoin = async (selectedCoin) => {
-    console.log(selectedCoin);
-
     const purchasePointCoin = selectedCoin.coinName;
     const purchasePointCoinAmount = selectedCoin.coinAmount;
     const purchasePointAmountUSD = selectedCoin.coinAmountUSD;
@@ -41,7 +39,6 @@ const Crypto = ({ coinData }) => {
     );
 
     const response = await data;
-    console.log(response);
   };
 
   const coinToBuyHandler = (event, currentCoin) => {

@@ -18,7 +18,7 @@ export default async function handler(req, res) {
         dateCreated: new Date(),
         coinsHeld: {},
         userId: 1,
-        isNew: false,
+        isNew: true,
       },
     },
     { upsert: true }

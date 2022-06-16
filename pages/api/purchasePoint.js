@@ -10,7 +10,6 @@ export default async function handler(req, res) {
     const coinName = data.coin_name;
     const coinAmount = data.coin_amount;
     const USDCoinAmount = data.usd_coin_amount;
-    console.log(String(userEmail));
 
     // make request to mongodb to retrieve userCoin object
     // make sure that user USD is greater than amount trying to purchase (break if it is not)

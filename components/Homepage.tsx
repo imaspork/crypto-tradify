@@ -6,6 +6,12 @@ import Router, { useRouter } from "next/router";
 const Homepage = () => {
   const [session, loadingSession] = useSession();
 
+  useEffect(() => {
+    if (session?.isNew === true) {
+      Router.push("/NewUser", undefined, { shallow: true });
+    }
+  }, [session]);
+
   const RenderButtonsOnSession = () => {
     if (session) {
       return (
@@ -17,6 +23,13 @@ const Homepage = () => {
               </button>
             </a>
           </Link>
+          <Link href='/Account'>
+            <a>
+              <button className='button-primary mt-3 homepage-button'>
+                Account
+              </button>
+            </a>
+          </Link>
         </React.Fragment>
       );
     } else {
@@ -25,7 +38,7 @@ const Homepage = () => {
           <Link href='/Account'>
             <a>
               <button className='button-primary mt-3 homepage-button'>
-                {session ? "Account Page" : "Get started"}
+                Get started
               </button>
             </a>
           </Link>
