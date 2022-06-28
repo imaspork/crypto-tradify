@@ -24,7 +24,6 @@ const Crypto = ({ coinData }) => {
   const [coinToBuy, setCoinToBuy] = useState(null);
 
   const [session, loadingSession] = useSession();
-  console.log(session);
 
   useEffect(() => {}, [coinToBuy]);
 

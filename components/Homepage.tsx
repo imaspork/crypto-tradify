@@ -1,16 +1,9 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/client";
-import Router, { useRouter } from "next/router";
 
 const Homepage = () => {
   const [session, loadingSession] = useSession();
-
-  useEffect(() => {
-    if (session?.isNew === true) {
-      Router.push("/NewUser", undefined, { shallow: true });
-    }
-  }, [session]);
 
   const RenderButtonsOnSession = () => {
     if (session) {

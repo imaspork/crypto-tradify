@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     {
       $setOnInsert: {
         email: data.email,
-        userName: "testInserted",
+        userName: data.email,
         USDHeld: parseInt(0),
         dateCreated: new Date(),
         coinsHeld: {},

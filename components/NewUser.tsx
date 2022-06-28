@@ -1,23 +1,16 @@
 import { useSession } from "next-auth/client";
 import React, { useEffect } from "react";
 import Router, { useRouter } from "next/router";
+import checkIsNotNew from "../util/checkisNotNew";
 
-const NewUser = () => {
-  const [session, loadingSession] = useSession();
-  console.log(session);
-  useEffect(() => {
-    // session is not being shared across components properly. Refreshing the page fixes it - find a way to get session data to rehydrate
-    if (session?.isNew !== true) {
-      Router.push("/Account", undefined, { shallow: true });
-    }
-  }, []);
-
+const NewUser = (session) => {
   const setDollarAmount = async (amount) => {
     const data = await fetch(
-      `http://localhost:3000/api/setDifficulty?user_email=${session.user.email}&amount=${amount}`
+      `http://localhost:3000/api/setDifficulty?user_email=${session.session.user.email}&amount=${amount}`
     );
     await data.json().then(() => {
-      Router.push("/Account", undefined, { shallow: true });
+      localStorage.setItem("isNew", "false");
+      Router.push("/Crypto", undefined, { shallow: true });
     });
   };
 

@@ -3,98 +3,87 @@ import React, { useEffect, useState } from "react";
 import googleImg from "../public/brands/google/google-logo.png";
 import githubImg from "../public/brands/GitHub-Mark-64px.png";
 import Image from "next/image";
-import { getCustomRoute } from "next/dist/server/server-route-utils";
-import UserObject from "../components/UserObject";
+import NewUser from "../components/NewUser";
+import checkIsNotNew from "../util/checkisNotNew";
+import Link from "next/link";
 
 export default function SignUp() {
   const [session, loadingSession] = useSession();
-  console.log(session);
-
   const [userState, setUserState] = useState([]);
 
   const signInHandler = (provider) => {
     signIn(provider);
   };
 
-  const getData = async () => {
-    const data = await fetch(
-      `http://localhost:3000/api/user?email=${session?.user?.email}`
-    );
-
-    const response = await data.json();
-    setUserState(response?.response?.value);
-  };
-
-  useEffect(() => {
-    if (session !== null && session?.user?.email !== undefined) {
-      getData();
-    }
-  }, [session]);
-
-  if (loadingSession) {
-    return <p>Loading...</p>;
-  }
   return (
-    <section
-      id='account-page'
-      className='d-flex flex-row justify-content-center'
-    >
-      <div className='d-flex flex-column justify-content-center align-items-center'>
-        <div>
-          {!session && (
-            <React.Fragment>
-              <h2 className='text-center'>Sign in</h2>
-              <div className='d-flex flex-row'>
-                <button
-                  className='d-flex flex-col align-items-center  login-wrapper-button '
-                  onClick={() => signInHandler("google")}
-                >
-                  <Image
-                    src={googleImg}
-                    width={40}
-                    height={40}
-                    alt='google log in image'
-                  />
-                  <span>Login with Google</span>
-                </button>
+    <React.Fragment>
+      {session?.isNew === true && checkIsNotNew() === false ? (
+        <NewUser session={session} />
+      ) : null}
+      <section
+        id='account-page'
+        className='d-flex flex-row justify-content-center'
+      >
+        <div className='d-flex flex-column justify-content-center align-items-center'>
+          <div>
+            {!session && (
+              <React.Fragment>
+                <h2 className='text-center'>Sign in</h2>
+                <div className='d-flex flex-row'>
+                  <button
+                    className='d-flex flex-col align-items-center  login-wrapper-button '
+                    onClick={() => signInHandler("google")}
+                  >
+                    <Image
+                      src={googleImg}
+                      width={40}
+                      height={40}
+                      alt='google log in image'
+                    />
+                    <span>Login with Google</span>
+                  </button>
 
-                <button
-                  className='d-flex flex-col align-items-center  login-wrapper-button '
-                  onClick={() => signInHandler("github")}
-                >
-                  <Image
-                    src={githubImg}
-                    width={40}
-                    height={40}
-                    alt='github login image'
-                  />
-                  <span>Login with GitHub</span>
-                </button>
-              </div>
-            </React.Fragment>
-          )}
+                  <button
+                    className='d-flex flex-col align-items-center  login-wrapper-button '
+                    onClick={() => signInHandler("github")}
+                  >
+                    <Image
+                      src={githubImg}
+                      width={40}
+                      height={40}
+                      alt='github login image'
+                    />
+                    <span>Login with GitHub</span>
+                  </button>
+                </div>
+              </React.Fragment>
+            )}
 
-          {session && (
-            <>
-              <h4>Welcome back {session.user.name}</h4>
+            {session && (
+              <>
+                <h4>Welcome back {session.user.name}</h4>
 
-              <div>
-                <h4>Email: {session.user.email}</h4>
-                <br />
-                <UserObject userData={userState} />
-                {session.user.image && (
-                  <span className='user-profile'>
-                    <img src={session.user.image} alt={session.user.name} />
-                  </span>
-                )}
-              </div>
-            </>
-          )}
+                <div>
+                  <h4>Email: {session.user.email}</h4>
+                  <br />
+                  {session.user.image && (
+                    <span className='user-profile'>
+                      <img src={session.user.image} alt={session.user.name} />
+                    </span>
+                  )}
+                </div>
+                <Link href='/Account/Portfolio'>
+                  <a>
+                    <button className='button-primary mt-3 homepage-button'>
+                      Portfolio
+                    </button>
+                  </a>
+                </Link>
+              </>
+            )}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </React.Fragment>
   );
-}
-function checkUserEmail(email: any) {
-  throw new Error("Function not implemented.");
 }
