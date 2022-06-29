@@ -6,11 +6,13 @@
 @import "./cryptopage.module.scss";
 @import "./account.module.scss";
 @import "./newuser.module.scss";
+@import "./portfolio.module.scss";
 html,
 body {
   padding: 0;
   margin: 0;
   font-family: "Montserrat";
+  color: #d1cdc7;
 }
 
 a {

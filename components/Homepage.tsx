@@ -43,14 +43,16 @@ const Homepage = () => {
   return (
     <section
       id='home-page'
-      className='d-flex flex-row justify-content-center align-items-center'
+      className='d-flex flex-column align-items-center justify-content-center'
     >
-      <div id='tagline'>
+      <div className='d-flex flex-column text-center'>
         <h1>
-          <b>Buy, Sell, and Hold the top 100 Cryptocurrencies (simulated)</b>{" "}
+          <b>Trade with confidence.</b>
         </h1>
+        <h2>Simulated cryptocurrency trading</h2>
       </div>
-      <div className='d-flex flex-column align-items-center'>
+
+      <div className='d-flex flex-column align-items-center pt-5'>
         <RenderButtonsOnSession />
       </div>
     </section>

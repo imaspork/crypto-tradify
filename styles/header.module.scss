@@ -1,11 +1,17 @@
 @import "./colors.scss";
 #header {
+  color: white;
   height: 70px;
-  background-color: #fff;
+  background-color: #181a1b;
   justify-content: center;
 
   .user-status-container {
     display: none;
+  }
+  .user-profile img {
+    width: 48px;
+    border-radius: 50%;
+    margin-right: 12px;
   }
   @media (min-width: 600px) {
     .user-status-container {

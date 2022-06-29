@@ -18,7 +18,7 @@ const Portfolio = () => {
   // need to include value of coins -
 
   return (
-    <div>
+    <section id='portfolio'>
       {userPortfolioData !== null ? (
         <div>
           <h2>
@@ -38,7 +38,7 @@ const Portfolio = () => {
       ) : (
         <h2>Loading portfolio...</h2>
       )}
-    </div>
+    </section>
   );
 };
 

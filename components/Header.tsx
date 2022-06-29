@@ -20,6 +20,7 @@ const Header = () => {
           </a>
         </Link>
       </div>
+
       <div className='user-status-container'>
         {session ? (
           <div className=''>
@@ -30,6 +31,11 @@ const Header = () => {
             >
               Sign Out
             </button>
+            {session.user.image && (
+              <span className='user-profile'>
+                <img src={session.user.image} alt={session.user.name} />
+              </span>
+            )}
           </div>
         ) : null}
       </div>
