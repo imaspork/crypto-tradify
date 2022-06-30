@@ -15,7 +15,6 @@ const Portfolio = () => {
       setUserPortfolioData({ userData: response.response.value });
     });
   }, [session]);
-  // need to include value of coins -
 
   return (
     <section id='portfolio'>

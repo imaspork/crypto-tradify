@@ -14,31 +14,28 @@ import {
 } from "recharts";
 import formatGraphData from "../util/formatgraphtime";
 import formatNums from "../util/formatNums";
+import buyCoin from "../util/buyCoin";
 import { DateTime } from "luxon";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import { useSession } from "next-auth/client";
 
 const Crypto = ({ coinData }) => {
   const [graphData, setGraphData] = useState(null);
-  const [currentCoin, setCurrentCoin] = useState("Select a Cryptocurrency");
+  const [currentCoin, setCurrentCoin] = useState(null);
   const [coinToBuy, setCoinToBuy] = useState(null);
 
   const [session, loadingSession] = useSession();
 
-  useEffect(() => {}, [coinToBuy]);
+  const selectedCurrentCoin = useRef(null);
 
-  const testRef = useRef(null);
-
-  const buyCoin = async (selectedCoin) => {
-    const purchasePointCoin = selectedCoin.coinName;
-    const purchasePointCoinAmount = selectedCoin.coinAmount;
-    const purchasePointAmountUSD = selectedCoin.coinAmountUSD;
-    const data = await fetch(
-      `http://localhost:3000/api/purchasePoint?user_email=${session?.user?.email}&coin_name=${purchasePointCoin}&coin_amount=${purchasePointCoinAmount}&usd_coin_amount=${purchasePointAmountUSD}`
-    );
-
-    const response = await data;
+  const defaultCoin = {
+    name: "Bitcoin",
   };
+
+  useEffect(() => {
+    coinGraph(defaultCoin);
+    console.log(coinToBuy);
+  }, []);
 
   const coinToBuyHandler = (event, currentCoin) => {
     let desiredCoinValueUSD = event;
@@ -54,12 +51,17 @@ const Crypto = ({ coinData }) => {
   };
 
   const coinGraph = async (coin) => {
+    console.log(coin);
     const encodedString = encodeURIComponent(coin.name);
     const data = await fetch(
       `http://localhost:3000/api/search?term=${encodedString}`
     );
 
     const responseGraph = await data.json().then((responseGraph) => {
+      console.log(responseGraph);
+      if (coinToBuy === null && responseGraph[0]) {
+        setCoinToBuy(responseGraph[0]);
+      }
       setGraphData(formatGraphData(responseGraph));
     });
   };
@@ -116,48 +118,56 @@ const Crypto = ({ coinData }) => {
         <div className='d-flex flex-column w-100 coin-stats-container'>
           <div id='coin-stats'>
             <h2 className='coin-name text-center'>
-              {testRef.current?.name ? testRef.current.name : null}
+              {selectedCurrentCoin.current?.name
+                ? selectedCurrentCoin.current.name
+                : coinToBuy?.name}
             </h2>
             <div className='d-flex flex-row justify-content-between'>
               <h2 className='coin-value'>Value $</h2>
               <h2>
-                {testRef.current?.price_usd ? testRef.current.price_usd : null}
+                {selectedCurrentCoin.current?.price_usd
+                  ? selectedCurrentCoin.current.price_usd
+                  : coinToBuy?.price_usd}
               </h2>
             </div>
             <div className='d-flex flex-row justify-content-between'>
               <h2 className='coin-rank'>Rank</h2>
-              <h2>{testRef.current?.rank ? testRef.current.rank : null}</h2>
+              <h2>
+                {selectedCurrentCoin.current?.rank
+                  ? selectedCurrentCoin.current.rank
+                  : coinToBuy?.rank}
+              </h2>
             </div>
             <div className='d-flex flex-row justify-content-between'>
               <h2 className='coin-7-day'>7 Day Diff </h2>
               <h2>
-                {testRef.current?.percent_change_7d
-                  ? `${testRef.current.percent_change_7d}%`
-                  : null}
+                {selectedCurrentCoin.current?.percent_change_7d
+                  ? `${selectedCurrentCoin.current.percent_change_7d}%`
+                  : `${coinToBuy?.percent_change_7d}%`}
               </h2>
             </div>
             <div className='d-flex flex-row justify-content-between'>
               <h2 className='coin-value'>24 Hour Diff</h2>
               <h2>
-                {testRef.current?.percent_change_24h
-                  ? `${testRef.current.percent_change_24h}%`
-                  : null}
+                {selectedCurrentCoin.current?.percent_change_24h
+                  ? `${selectedCurrentCoin.current.percent_change_24h}%`
+                  : `${coinToBuy?.percent_change_24h}%`}
               </h2>
             </div>
             <div className='d-flex flex-row justify-content-between'>
               <h2 className='coin-rank'>Market Cap</h2>
               <h2>
-                {testRef.current?.market_cap_usd
-                  ? formatNums(testRef.current.market_cap_usd)
-                  : null}
+                {selectedCurrentCoin.current?.market_cap_usd
+                  ? formatNums(selectedCurrentCoin.current.market_cap_usd)
+                  : formatNums(coinToBuy?.market_cap_usd)}
               </h2>
             </div>
             <div className='d-flex flex-row justify-content-between'>
               <h2 className='coin-7-day'>Volume 24H </h2>
               <h2>
-                {testRef.current?.volume24a
-                  ? `${formatNums(testRef.current.volume24a)}`
-                  : null}
+                {selectedCurrentCoin.current?.volume24a
+                  ? `${formatNums(selectedCurrentCoin.current.volume24a)}`
+                  : `${formatNums(coinToBuy?.volume24a)}`}
               </h2>
             </div>
           </div>
@@ -168,13 +178,10 @@ const Crypto = ({ coinData }) => {
         className='d-flex flex-row justify-content-center w-100'
       >
         <div className='d-flex flex-row align-items-start'>
-          <div className='d-flex flex-column'>
-            <Dropdown className='m-1'>
-              <Dropdown.Toggle
-                id='dropdown-button-dark-example1'
-                variant='secondary'
-              >
-                {currentCoin ? currentCoin : "Select a Cryptocurrency"}
+          <div className='d-flex flex-row buy-section'>
+            <Dropdown>
+              <Dropdown.Toggle id='dropdown-button-dark' variant='secondary'>
+                {currentCoin ? currentCoin : defaultCoin.name}
               </Dropdown.Toggle>
 
               <Dropdown.Menu variant='dark' className='crypto-dropdown-menu'>
@@ -185,7 +192,7 @@ const Crypto = ({ coinData }) => {
                         onClick={() => {
                           coinGraph(coin);
                           setCurrentCoin(coin.name);
-                          testRef.current = coin;
+                          selectedCurrentCoin.current = coin;
                         }}
                       >
                         {coin.name}
@@ -195,34 +202,38 @@ const Crypto = ({ coinData }) => {
                 })}
               </Dropdown.Menu>
             </Dropdown>
-            <button
-              className='button-primary'
-              onClick={() => buyCoin(coinToBuy)}
-            >
-              Buy
-            </button>
+            <input
+              className=''
+              placeholder='Enter USD amount'
+              type='number'
+              min='0'
+              onChange={(event) =>
+                coinToBuyHandler(
+                  event.target.value,
+                  selectedCurrentCoin.current
+                )
+              }
+            ></input>
           </div>
 
-          <div className='d-flex flex-row justify-content-center'>
-            <div className='d-flex flex-column buy-section '>
-              <input
-                className='m-1'
-                placeholder='Enter USD amount'
-                type='number'
-                min='0'
-                onChange={(event) =>
-                  coinToBuyHandler(event.target.value, testRef.current)
-                }
-              ></input>
-              {/* add toggle for puchasing by dollar and by coin amount */}
-              <div className='mt-2'>
-                <h5 className='text-center'>
-                  {/* {coinToBuy?.coinAmount} {coinToBuy.coinName} */}
-                </h5>
-                <h5 className='text-center'>${coinToBuy?.coinAmountUSD} USD</h5>
-              </div>
-            </div>
-          </div>
+          <div className='d-flex flex-row justify-content-center'></div>
+        </div>
+        <div className=''>
+          <h5 className='text-center'>
+            {/* {coinToBuy?.coinAmount} {coinToBuy.coinName} */}
+          </h5>
+          <h5 className='text-center'>
+            {coinToBuy?.coinAmount} {coinToBuy?.coinName}
+          </h5>
+        </div>
+
+        <div className='d-flex flex-column'>
+          <button
+            className='button-primary'
+            onClick={() => buyCoin(coinToBuy, session)}
+          >
+            Buy
+          </button>
         </div>
       </section>
     </section>
