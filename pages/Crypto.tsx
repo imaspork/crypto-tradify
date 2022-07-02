@@ -18,6 +18,7 @@ import buyCoin from "../util/buyCoin";
 import { DateTime } from "luxon";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 import { useSession } from "next-auth/client";
+import Portfolio from "../components/Portfolio";
 
 const Crypto = ({ coinData }) => {
   const [graphData, setGraphData] = useState(null);
@@ -114,11 +115,34 @@ const Crypto = ({ coinData }) => {
         </div>
         <div className='d-flex flex-column w-100 coin-stats-container'>
           <div id='coin-stats'>
-            <h2 className='coin-name text-center'>
+            {/* <h2 className='coin-name text-center'>
               {selectedCurrentCoin.current?.name
                 ? selectedCurrentCoin.current.name
                 : coinToBuy?.name}
-            </h2>
+            </h2> */}
+            <Dropdown className='d-flex flex-row justify-content-center'>
+              <Dropdown.Toggle id='dropdown-button-dark' variant='secondary'>
+                {currentCoin ? currentCoin : defaultCoin.name}
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu variant='dark' className='crypto-dropdown-menu'>
+                {coinData.map((coin) => {
+                  return (
+                    <Dropdown.Item key={`${coin._id}`}>
+                      <h2
+                        onClick={() => {
+                          coinGraph(coin);
+                          setCurrentCoin(coin.name);
+                          selectedCurrentCoin.current = coin;
+                        }}
+                      >
+                        {coin.name}
+                      </h2>
+                    </Dropdown.Item>
+                  );
+                })}
+              </Dropdown.Menu>
+            </Dropdown>
             <div className='d-flex flex-row justify-content-between'>
               <h2 className='coin-value'>Value $</h2>
               <h2>
@@ -172,35 +196,14 @@ const Crypto = ({ coinData }) => {
       </section>
       <section
         id='buy-section-container'
-        className='d-flex flex-row justify-content-center w-100'
+        className='d-flex flex-row justify-content-center align-items-center w-100'
       >
-        <div className='d-flex flex-row align-items-start'>
-          <div className='d-flex flex-row buy-section'>
-            <Dropdown>
-              <Dropdown.Toggle id='dropdown-button-dark' variant='secondary'>
-                {currentCoin ? currentCoin : defaultCoin.name}
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu variant='dark' className='crypto-dropdown-menu'>
-                {coinData.map((coin) => {
-                  return (
-                    <Dropdown.Item key={`${coin._id}`}>
-                      <h2
-                        onClick={() => {
-                          coinGraph(coin);
-                          setCurrentCoin(coin.name);
-                          selectedCurrentCoin.current = coin;
-                        }}
-                      >
-                        {coin.name}
-                      </h2>
-                    </Dropdown.Item>
-                  );
-                })}
-              </Dropdown.Menu>
-            </Dropdown>
+        <div
+          id='buy-input-container'
+          className='d-flex flex-column justify-content-center align-items-center'
+        >
+          <div className='d-flex flex-row justify-content-center buy-section'>
             <input
-              className=''
               placeholder='Enter USD amount'
               type='number'
               min='0'
@@ -212,33 +215,28 @@ const Crypto = ({ coinData }) => {
               }
             ></input>
           </div>
-
-          <div className='d-flex flex-row justify-content-center'></div>
-        </div>
-        <div className=''>
-          <h5 className='text-center'>
-            {/* {coinToBuy?.coinAmount} {coinToBuy.coinName} */}
-          </h5>
-          <h5 className='text-center'>
-            {coinToBuy?.coinAmount} {coinToBuy?.coinName}
-          </h5>
-        </div>
-
-        <div className='d-flex flex-column'>
-          <button
-            className='button-primary'
-            onClick={() => buyCoin(coinToBuy, session, "buy")}
-          >
-            Buy
-          </button>
-          <button
-            className='button-primary'
-            onClick={() => buyCoin(coinToBuy, session, "sell")}
-          >
-            sell
-          </button>
+          <div className='w-100'>
+            <h5 className='text-left my-2 p-0'>
+              {coinToBuy?.coinAmount} {coinToBuy?.coinName}
+            </h5>
+          </div>
+          <div className='d-flex flex-row justify-content-between w-100'>
+            <button
+              className='button-primary buy-sell-button'
+              onClick={() => buyCoin(coinToBuy, session, "buy")}
+            >
+              Buy
+            </button>
+            <button
+              className='button-primary buy-sell-button'
+              onClick={() => buyCoin(coinToBuy, session, "sell")}
+            >
+              Sell
+            </button>
+          </div>
         </div>
       </section>
+      <Portfolio />
     </section>
   );
 };

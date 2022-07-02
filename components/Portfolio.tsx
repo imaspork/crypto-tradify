@@ -1,11 +1,10 @@
 import { useSession } from "next-auth/client";
 import React, { useEffect, useState } from "react";
-import formatNums from "../../util/formatNums";
-import getUserData from "../../util/getUserData";
+import formatNums from "../util/formatNums";
+import getUserData from "../util/getUserData";
 
 const Portfolio = () => {
   const [session, loadingSession] = useSession();
-
   const [userPortfolioData, setUserPortfolioData] = useState(null);
   const userPortfolioCoins =
     userPortfolioData?.userData?.coinsHeld?.currentHeld;
@@ -17,7 +16,7 @@ const Portfolio = () => {
   }, [session]);
 
   return (
-    <section id='portfolio'>
+    <section>
       {userPortfolioData !== null ? (
         <div>
           <h2>

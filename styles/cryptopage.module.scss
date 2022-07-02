@@ -39,10 +39,23 @@
   }
 }
 
-.buy-section {
-  width: 500px;
+.buy-sell-button {
+  width: 120px;
+}
+
+#buy-input-container {
+  max-width: 500px;
 }
 
 input {
-  height: 37px;
+  height: 40px;
+  width: 300px;
+  border-radius: 6px;
+  border: none;
+
+  &:focus {
+    border: 2px solid $primary;
+    box-shadow: 0 0px 3px $primary;
+    outline: 0;
+  }
 }
