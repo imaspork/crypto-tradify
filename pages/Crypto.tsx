@@ -34,7 +34,6 @@ const Crypto = ({ coinData }) => {
 
   useEffect(() => {
     coinGraph(defaultCoin);
-    console.log(coinToBuy);
   }, []);
 
   const coinToBuyHandler = (event, currentCoin) => {
@@ -51,14 +50,12 @@ const Crypto = ({ coinData }) => {
   };
 
   const coinGraph = async (coin) => {
-    console.log(coin);
     const encodedString = encodeURIComponent(coin.name);
     const data = await fetch(
       `http://localhost:3000/api/search?term=${encodedString}`
     );
 
     const responseGraph = await data.json().then((responseGraph) => {
-      console.log(responseGraph);
       if (coinToBuy === null && responseGraph[0]) {
         setCoinToBuy(responseGraph[0]);
       }
@@ -230,9 +227,15 @@ const Crypto = ({ coinData }) => {
         <div className='d-flex flex-column'>
           <button
             className='button-primary'
-            onClick={() => buyCoin(coinToBuy, session)}
+            onClick={() => buyCoin(coinToBuy, session, "buy")}
           >
             Buy
+          </button>
+          <button
+            className='button-primary'
+            onClick={() => buyCoin(coinToBuy, session, "sell")}
+          >
+            sell
           </button>
         </div>
       </section>

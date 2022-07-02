@@ -16,7 +16,10 @@ export default async function handler(req, res) {
         userName: data.email,
         USDHeld: parseInt(0),
         dateCreated: new Date(),
-        coinsHeld: {},
+        coinsHeld: {
+          transactionHistory: [],
+          currentHeld: {},
+        },
         userId: 1,
         isNew: true,
       },

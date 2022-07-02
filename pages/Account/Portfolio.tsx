@@ -7,14 +7,16 @@ const Portfolio = () => {
   const [session, loadingSession] = useSession();
 
   const [userPortfolioData, setUserPortfolioData] = useState(null);
-  const userPortfolioCoins = userPortfolioData?.userData?.coinsHeld;
-  console.log(userPortfolioCoins);
+  const userPortfolioCoins =
+    userPortfolioData?.userData?.coinsHeld?.currentHeld;
 
   useEffect(() => {
     getUserData(session?.user?.email).then((response) => {
       setUserPortfolioData({ userData: response.response.value });
     });
   }, [session]);
+
+  console.log(userPortfolioCoins);
 
   return (
     <section id='portfolio'>
@@ -25,13 +27,17 @@ const Portfolio = () => {
           </h2>
           <h2>Owned coins: </h2>
           <div>
-            {Object.keys(userPortfolioCoins).map((coin, coinAmount) => {
-              return (
-                <h2 key={coin}>
-                  {coin}: {userPortfolioCoins[coin]}
-                </h2>
-              );
-            })}
+            {userPortfolioCoins ? (
+              <React.Fragment>
+                {Object.keys(userPortfolioCoins).map((coin, coinAmount) => {
+                  return (
+                    <h2 key={coin}>
+                      {coin}: {userPortfolioCoins[coin]}
+                    </h2>
+                  );
+                })}
+              </React.Fragment>
+            ) : null}
           </div>
         </div>
       ) : (

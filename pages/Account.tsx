@@ -6,11 +6,13 @@ import Image from "next/image";
 import NewUser from "../components/NewUser";
 import checkIsNotNew from "../util/checkisNotNew";
 import Link from "next/link";
+import deleteAccountData from "../util/deleteUser";
 
 export default function SignUp() {
   const [session, loadingSession] = useSession();
   const [userState, setUserState] = useState([]);
-
+  console.log(session);
+  console.log(checkIsNotNew());
   const signInHandler = (provider) => {
     signIn(provider);
   };
@@ -79,6 +81,14 @@ export default function SignUp() {
                     </button>
                   </a>
                 </Link>
+                <a>
+                  <button
+                    className='button-primary mt-3 homepage-button'
+                    onClick={() => deleteAccountData(session?.user?.email)}
+                  >
+                    Delete Account
+                  </button>
+                </a>
               </>
             )}
           </div>
